@@ -1,5 +1,7 @@
 # cnn-for-sentence
-[Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1408.5882)
+[Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1408.5882) 논문에 대한 구현체
+
+[논문 리뷰 바로가기](https://bhchoi.github.io/posts/Convolutional_neural_networks_for_sentence_classification)
 
 ## Requirements
 * pytorch
