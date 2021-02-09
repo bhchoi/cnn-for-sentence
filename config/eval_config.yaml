@@ -1,3 +1,5 @@
+test_data: data/ratings_test.txt
+pretrained_word_vector: data/ko.bin
 ckpt_path: checkpoint/CNN-multichannel/20210208_1/cnn-epoch=04-val_loss=0.49028.ckpt
 batch_size: 256
 dropout_rate: 0.1
@@ -6,3 +8,5 @@ filter_size: 100
 kernel_sizes: [3, 4, 5]
 max_pooling_kernel_size: 2
 cnn_type: CNN-multichannel
+gpus: 8
+distributed_backend: ddp

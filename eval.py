@@ -17,14 +17,14 @@ def get_dataloader(file_path, max_len, preprocessor, batch_size):
 
 
 def main(config):
-    word2vec_model = gensim.models.Word2Vec.load("data/ko.bin")
+    word2vec_model = gensim.models.Word2Vec.load(config.pretrained_word_vector)
     word2vec_model.wv["<pad>"] = np.zeros(word2vec_model.wv.vector_size)
     word2vec_model.wv["<unk>"] = np.zeros(word2vec_model.wv.vector_size)
 
     preprocessor = Preprocessor(word2vec_model)
 
     test_dataloader = get_dataloader(
-        "data/ratings_test.txt", config.max_len, preprocessor, config.batch_size
+        config.test_data, config.max_len, preprocessor, config.batch_size
     )
 
     net = CNN(word2vec_model.wv, config)
@@ -32,8 +32,8 @@ def main(config):
     net.load_state_dict(checkpoint["state_dict"])
 
     trainer = pl.Trainer(
-        gpus=8,
-        distributed_backend="ddp",
+        distributed_backend=config.distributed_backend,
+        gpus=config.gpus,
     )
     res = trainer.test(net, test_dataloader)
 

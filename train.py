@@ -18,16 +18,16 @@ def get_dataloader(file_path, max_len, preprocessor, batch_size):
 
 
 def main(config):
-    word2vec_model = gensim.models.Word2Vec.load("data/ko.bin")
+    word2vec_model = gensim.models.Word2Vec.load(config.pretrained_word_vector)
     word2vec_model.wv["<pad>"] = np.zeros(word2vec_model.wv.vector_size)
     word2vec_model.wv["<unk>"] = np.zeros(word2vec_model.wv.vector_size)
 
     preprocessor = Preprocessor(word2vec_model)
     train_dataloader = get_dataloader(
-        "data/ratings_train.txt", config.max_len, preprocessor, config.batch_size
+        config.train_data, config.max_len, preprocessor, config.batch_size
     )
     val_dataloader = get_dataloader(
-        "data/ratings_test.txt", config.max_len, preprocessor, config.batch_size
+        config.val_data, config.max_len, preprocessor, config.batch_size
     )
 
     logger = TensorBoardLogger(config.log_dir, config.cnn_type, config.task)
@@ -40,8 +40,8 @@ def main(config):
 
     net = CNN(word2vec_model.wv, config)
     trainer = pl.Trainer(
-        distributed_backend="ddp",
-        gpus=8,
+        distributed_backend=config.distributed_backend,
+        gpus=config.gpus,
         max_epochs=20,
         logger=logger,
         callbacks=[model_checkpoint, early_stopping],
