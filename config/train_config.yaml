@@ -1,0 +1,9 @@
+task: "20210208_1"
+batch_size: 256
+dropout_rate: 0.1
+max_len: 70
+filter_size: 100
+kernel_sizes: [3, 4, 5]
+max_pooling_kernel_size: 2
+cnn_type: CNN-multichannel
+log_dir: /workspace/exercise_book/logs/nsmc_pytorch
